@@ -1,0 +1,100 @@
+*Assign Library;
+LIBNAME sasData "P:\SurvivalAnalytics\codesanddatasets.part1\MySasData";
+
+*Create SAS Tables from CSV Files ;
+DATA sasData.Electronics_0_50_VG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_0_50_VG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+
+DATA sasData.Electronics_0_50_NG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_0_50_NG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+
+DATA sasData.Electronics_50_200_VG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_50_200_VG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+DATA sasData.Electronics_50_200_NG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_50_200_NG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+
+DATA sasData.Electronics_200_plus_NG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_200_plus_NG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+
+DATA sasData.Electronics_200_plus_VG;
+	LENGTH reviewDateString $10.;
+	INFILE "P:\Electronics_200_plus_VG.csv" DLM=',' FIRSTOBS=2 DSD ;
+	INPUT reviewID reviewerID $ asin $ rating reviewDateString $ price salesRank;
+	reviewDate = input(reviewDateString , yymmdd10.);
+	FORMAT reviewDate mmddyy10.;
+	DROP reviewDateString;	
+	
+RUN;
+
+*group reviews by dates;
+
+PROC SUMMARY DATA=sasData.Electronics_0_50_VG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_0_50_VG(DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
+
+PROC SUMMARY DATA=sasData.Electronics_0_50_NG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_0_50_NG (DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
+
+PROC SUMMARY DATA=sasData.Electronics_50_200_VG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_50_200_VG(DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
+
+PROC SUMMARY DATA=sasData.Electronics_50_200_NG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_50_200_NG(DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
+
+PROC SUMMARY DATA=sasData.Electronics_200_plus_NG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_200_plus_NG(DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
+
+PROC SUMMARY DATA=sasData.Electronics_200_plus_VG NWAY MISSING;
+	CLASS reviewDate;
+	OUTPUT OUT=SASDATA.groupByDate_Ele_200_plus_VG(DROP=_TYPE_ 
+		RENAME=_FREQ_=reviewCount);
+RUN;
